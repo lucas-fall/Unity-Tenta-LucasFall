@@ -10,19 +10,22 @@ public class BoxCounter : MonoBehaviour
     [Header("Current Number of Boxes")]
     [SerializeField] private int boxCount = 0;
 
+    [Header("Goal Settings")]
+    public int goalCount = 5;               // The target number of boxes
+    public UnityEvent OnReachedGoal;        // Fires when boxCount == goalCount
+    private bool goalReached = false;       // Prevents repeating the event
+
     [Header("Optional UI Display")]
     [SerializeField] private TextMeshProUGUI counterText;
 
     [Header("Events")]
-    public IntEvent OnCountChanged;
+    public IntEvent OnCountChanged;         // Fires on every count update
 
     void Start()
     {
-        // Make sure UI shows the starting value
-        UpdateUI();
+        UpdateUI(); // Initialize UI on start
     }
 
-    // Returns the current box count
     public int GetCount()
     {
         return boxCount;
@@ -48,11 +51,15 @@ public class BoxCounter : MonoBehaviour
 
     private void CountChanged()
     {
-        // Update UI (if assigned)
         UpdateUI();
-
-        // Trigger UnityEvent
         OnCountChanged?.Invoke(boxCount);
+
+        // --- Goal Check ---
+        if (!goalReached && boxCount == goalCount)
+        {
+            goalReached = true;
+            OnReachedGoal?.Invoke();
+        }
     }
 
     private void UpdateUI()

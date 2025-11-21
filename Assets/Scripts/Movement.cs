@@ -31,8 +31,7 @@ public class TopDownMovement : MonoBehaviour
 
         // Send values to Animator
         anim.SetBool("IsWalking", isWalking);
-        anim.SetFloat("MoveX", movement.x);
-        anim.SetFloat("MoveY", movement.y);
+    
 
         // Flip sprite based on horizontal movement
         if (movement.x < 0)
